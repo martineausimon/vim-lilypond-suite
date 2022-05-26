@@ -1,6 +1,6 @@
 # vim-lilypond-suite
 
-This is a fork of the vim plugin for Lilypond, with updated syntax and auto-completion module.
+This is a new filetype plugin for Lilypond, with updated syntax and auto-completion module.
 
 <p align="center">
 <img src="https://github.com/martineausimon/vim-lilypond-suite/blob/main/screenshoot.png">
