@@ -4,13 +4,13 @@ This is a new filetype plugin for Lilypond, with updated syntax and dictionary f
 
 * [Features](#Features)
 * [Installation](#Installation)
-* [Mappings](#Quick Start)
+* [Mappings](#Quick\ Start)
 * [Settings](#Settings)
-	* [Recommended highlightings](#Recommended highlightings)
-	* [Recommended settings for Auto-completion](#Recommended settings for Auto-completion)
+	* [Recommended highlightings](#Recommended\ highlightings)
+	* [Recommended settings for Auto-completion](#Recommended\ settings\ for\ Auto-completion)
 		* [coc.nvim](#COC.NVIM)
 		* [nvim-cmp](#NVIM-CMP)
-	* [Point & click configuration](#My Neovim settings for Point & Click)
+	* [Point & click configuration](#My\ Neovim\ settings\ for\ Point\ &\ Click)
 	* [License](#License)
 
 ## Features
