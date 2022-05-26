@@ -1,10 +1,9 @@
+" ===================================================================
 " LilyPond syntax file for Vim
-" 
-" Maintainer:  Simon Martineau <martineau.simon@gmail.com>
-" Last Change: 2022 Apr 16
-"
-" Installed As:         vim/syntax/lilypond.vim
-" Uses Generated File:  vim/syntax/lilypond-words.vim
+" Language:     LilyPond
+" Maintainer:   Simon Martineau <martineau.simon@gmail.com>
+" Website:      https://github.com/martineausimon/vim-lilypond-suite
+" ===================================================================
 
 if exists('b:current_syntax')
 	finish 
