@@ -2,16 +2,16 @@
 
 This is a new filetype plugin for Lilypond, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for TeX files which allows embedded LilyPond syntax highlighting, and makeprg which support lilypond-book or lyluatex package out of the box.
 
-* [Features](# Features)
-* [Installation](# Installation)
-* [Mappings](# Quick Start)
-* [Settings](# Settings)
-	* [Recommended highlightings](# Recommended highlightings)
-	* [Recommended settings for Auto-completion](# Recommended settings for Auto-completion)
-		* [coc.nvim](# COC.NVIM)
-		* [nvim-cmp](# NVIM-CMP)
-	* [Point & click configuration](# My Neovim settings for Point & Click)
-	* [License](# License)
+* [Features](#Features)
+* [Installation](#Installation)
+* [Mappings](#Quick Start)
+* [Settings](#Settings)
+	* [Recommended highlightings](#Recommended highlightings)
+	* [Recommended settings for Auto-completion](#Recommended settings for Auto-completion)
+		* [coc.nvim](#COC.NVIM)
+		* [nvim-cmp](#NVIM-CMP)
+	* [Point & click configuration](#My Neovim settings for Point & Click)
+	* [License](#License)
 
 ## Features
 
