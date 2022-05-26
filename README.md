@@ -10,8 +10,8 @@ This is a new filetype plugin for Lilypond, with updated syntax and dictionary f
 	* Recommended settings for Auto-completion
 		* coc.nvim
 		* nvim-cmp
-	* [Point & click configuration](#My)
-	* [License](#License)
+	* Point & click configuration
+* [License](#License)
 
 ## Features
 
