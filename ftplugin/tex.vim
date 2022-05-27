@@ -30,13 +30,11 @@ function! g:CheckLilyPondCompile()
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc"
-		execute "redraw!"
+		execute "$-1cc" | redraw
 	else
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc"
-		execute "redraw!"
+		execute "$-1cc" | redraw
 	endif
 endfunction
 
