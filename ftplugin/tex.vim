@@ -19,7 +19,24 @@ function! g:DetectLilypondSyntax()
 			\ contains=@lilypond
 		highlight Snip ctermfg=white cterm=bold
 		filetype plugin on
-		let b:current_syntax="litex"
+		let b:current_syntax="lytex"
+	endif
+endfunction
+
+function! g:CheckLilyPondCompile()
+	if !empty(glob("tmpOutDir/*.tex"))
+		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %'
+		execute 'silent:make!'
+		execute 'silent:!mv tmpOutDir/%:r.pdf .'
+		execute 'silent:!rm -rf tmpOutDir'
+		execute "redraw!"
+		execute "$-1cc"
+		execute "redraw!"
+	else
+		execute 'silent:!rm -rf tmpOutDir'
+		execute "redraw!"
+		execute "$-1cc"
+		execute "redraw!"
 	endif
 endfunction
 
@@ -37,12 +54,10 @@ function! g:SelectMakePrgType()
 			\ :$-1cc<cr>
 	else 
 		if search("begin{lilypond}", "n")
-			let &makeprg = 'lilypond-book --output=tmpOutDir --pdf % && cd tmpOutDir/ && lualatex %:r.tex'
+			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
 			noremap <buffer> <F5> :w<cr>
-				\ :silent:make!<cr>:!mv tmpOutDir/%:r.pdf .<cr>
-				\ :!rm -rf tmpOutDir<cr>
-				\ :redraw!<cr>
-				\ :$-1cc<cr>
+				\ :silent:make!<cr>
+				\ :call CheckLilyPondCompile()<cr>
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 			noremap <buffer> <F5> :w<cr>
