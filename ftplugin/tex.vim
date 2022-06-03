@@ -30,11 +30,13 @@ function! g:CheckLilyPondCompile()
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc" | redraw
+		execute "$-1cc"
+		redraw!
 	else
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc" | redraw
+		execute "$-1cc" 
+		redraw!
 	endif
 endfunction
 
@@ -43,13 +45,18 @@ augroup LilypondSyntax
 	autocmd BufEnter,BufWrite * call DetectLilypondSyntax()
 augroup END
 
+function! g:MakeLaTex()
+	execute 'silent:make!'
+	execute "redraw!"
+	execute "$-1cc" 
+	redraw!
+endfunction
+
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 		noremap <buffer> <F5> :w<cr>
-			\ :silent:make!<cr>
-			\ :redraw!<cr>
-			\ :$-1cc<cr>
+			\ :call MakeLaTex()<cr>
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
@@ -58,17 +65,15 @@ function! g:SelectMakePrgType()
 				\ :call CheckLilyPondCompile()<cr>
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-			noremap <buffer> <F5> :w<cr>
-				\ :silent:make!<cr>
-				\ :redraw!<cr>
-				\ :$-1cc<cr>
+			noremap <buffer> <F5> :w<cr> 
+				\ :call MakeLaTex()<cr>
 		endif
 	endif
 endfunction
 
 augroup MakePrgType
 	autocmd!
-	autocmd BufEnter,BufWrite,QuickFixCmdPre * call SelectMakePrgType()
+	autocmd BufEnter,BufWrite,InsertLeave * call SelectMakePrgType()
 augroup END
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
