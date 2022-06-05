@@ -40,6 +40,7 @@ Or use some other plugin manager:
 
 ## Mappings
 
+* `F4` : insert current version
 * `F5` : save & make
 * `F6` : view pdf (xdg-open)
 
