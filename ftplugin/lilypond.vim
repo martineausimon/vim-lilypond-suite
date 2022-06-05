@@ -13,6 +13,8 @@ let b:did_ftplugin = 1
 
 setlocal autoindent
 setlocal shiftwidth=2
+setlocal tabstop=2
+setlocal showmatch
 
 compiler lilypond
 
@@ -51,4 +53,3 @@ setlocal iskeyword+=\
 setlocal iskeyword+=-
 
 setlocal shortmess+=c
-setlocal showmatch
