@@ -48,25 +48,28 @@ augroup END
 function! g:MakeLaTex()
 	execute 'silent:make!'
 	execute "redraw!"
-	execute "$-1cc" 
+	execute "$-1cc"
 	redraw!
 endfunction
 
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-		noremap <buffer> <F5> :w<cr>
+		noremap <buffer> <F5> ma:w<cr>
 			\ :call MakeLaTex()<cr>
+			\ `a
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
-			noremap <buffer> <F5> :w<cr>
+			noremap <buffer> <F5> ma:w<cr>
 				\ :silent:make!<cr>
 				\ :call CheckLilyPondCompile()<cr>
+				\ `a
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-			noremap <buffer> <F5> :w<cr> 
+			noremap <buffer> <F5> ma:w<cr> 
 				\ :call MakeLaTex()<cr>
+				\ `a
 		endif
 	endif
 endfunction

@@ -19,13 +19,13 @@ setlocal showmatch
 compiler lilypond
 
 " <F4> insert current version
-noremap <buffer> <F4> 0O\version<space>
+noremap <buffer> <F4> ma0O\version<space>
 	\<Esc>:read<Space>!lilypond<Space>-v
 	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
-	\kJi"<esc>6la"<esc>j
+	\kJi"<esc>6la"<esc>`a
 
 " <F5>  save & make
-noremap <buffer> <F5> :w<cr>:silent:make!<cr>:redraw!<cr>:$cc<cr>
+noremap <buffer> <F5> ma:w<cr>:silent:make!<cr>:redraw!<cr>:$cc<cr><esc>`a
 
 " <F6>  view pdf (xdg-open)
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
