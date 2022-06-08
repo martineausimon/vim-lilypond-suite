@@ -11,6 +11,7 @@ This is a new filetype plugin for Lilypond, with updated syntax and dictionary f
 		* coc.nvim
 		* nvim-cmp
 	* Point & click configuration
+* [LaTex](#LaTex)
 * [License](#License)
 
 ## Features
@@ -224,6 +225,28 @@ export LYEDITOR="nvr +:'call cursor(%(line)s,%(char)s)' %(file)s"
 Follow the instructions on the [LilyPond website](https://lilypond.org/doc/v2.23/Documentation/usage/configuring-the-system-for-point-and-click#) to configure the system and create `lilypond-invoke-editor.desktop`
 
 Reboot or reload with `. ~/.profile`
+
+## LaTex
+
+This plugin works with `lilypond-book` by default if the `.tex` file contains `\begin{lilypond}`. To use `lyluatex`, just add `\usepackage{lyluatex}` to your preamble. 
+
+`lilypond-book` is - for me - more complete, it works in `tabular`, allows `\include` function in LilyPond code... but may be slow to compile.
+
+### Tricks for lilypond-book
+
+Add this lines to your preamble to avoid the padding on the left side and keep the score justified :
+
+```tex
+\def\preLilyPondExample{\hspace*{-3mm}}
+\newcommand{\betweenLilyPondSystem}[1]{\linebreak\hspace*{-3mm}}
+```
+
+Adjust space between systems using this line (in `\renewcommand` or `\newcommand`) :
+
+``tex
+{\betweenLilyPondSystem}[1]{\vspace{5mm}\linebreak\hspace*{-3mm}}
+```
+
 
 ## License
 
