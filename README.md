@@ -243,7 +243,7 @@ Add this lines to your preamble to avoid the padding on the left side and keep t
 
 Adjust space between systems using this line (in `\renewcommand` or `\newcommand`) :
 
-``tex
+```tex
 {\betweenLilyPondSystem}[1]{\vspace{5mm}\linebreak\hspace*{-3mm}}
 ```
 
