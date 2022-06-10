@@ -64,6 +64,7 @@ function! g:MakeLaTex()
 endfunction
 
 function! g:SelectMakePrgType()
+	execute ":w"
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 		noremap <buffer> <F5> ma:w<cr>
