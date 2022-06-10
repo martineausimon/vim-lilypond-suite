@@ -5,21 +5,32 @@
 " Website:      https://github.com/martineausimon/vim-lilypond-suite
 " ===================================================================
 
+if exists('b:current_syntax')
+	finish 
+endif
+
 function! g:DetectLilypondSyntax()
 	if search("begin{lilypond}", "n")
-		unlet b:current_syntax
-		syntax include @TEX syntax/tex.vim
-		unlet b:current_syntax
 		syntax include @lilypond syntax/lilypond.vim
-		syntax region litex 
+		unlet b:current_syntax
+		syntax region LyTeX 
 			\ matchgroup=Snip 
 			\ start="\\begin{lilypond}" 
 			\ end="\\end{lilypond}" 
-			\ containedin=@TEX 
 			\ contains=@lilypond
 		highlight Snip ctermfg=white cterm=bold
-		filetype plugin on
-		let b:current_syntax="lytex"
+	else
+		if search("\\lilypond", "n")
+			syntax include @lilypond syntax/lilypond.vim
+			unlet b:current_syntax
+			syn region LyTeX 
+				\ matchgroup=Delimiter
+				\ start="\\lilypond{" 
+				\ matchgroup=Delimiter
+				\ end="}" 
+				\ contains=@lilypond
+			highlight Snip ctermfg=white cterm=bold
+		endif
 	endif
 endfunction
 
@@ -42,7 +53,7 @@ endfunction
 
 augroup LilypondSyntax
 	autocmd!
-	autocmd BufEnter,BufWrite * call DetectLilypondSyntax()
+	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
 augroup END
 
 function! g:MakeLaTex()
@@ -76,7 +87,7 @@ endfunction
 
 augroup MakePrgType
 	autocmd!
-	autocmd BufEnter,BufWrite,InsertLeave * call SelectMakePrgType()
+	autocmd BufWinEnter,BufWrite,InsertLeave * call SelectMakePrgType()
 augroup END
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
