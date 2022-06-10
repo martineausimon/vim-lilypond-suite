@@ -25,7 +25,7 @@ endfunction
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
-		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %'
+		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %:r.tex'
 		execute 'silent:make!'
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
 		execute 'silent:!rm -rf tmpOutDir'

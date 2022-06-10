@@ -230,8 +230,6 @@ Reboot or reload with `. ~/.profile`
 
 This plugin works with `lilypond-book` by default if the `.tex` file contains `\begin{lilypond}`. To use `lyluatex`, just add `\usepackage{lyluatex}` to your preamble. 
 
-`lilypond-book` is - for me - more complete, it works in `tabular`, allows `\include` function in LilyPond code... but may be slow to compile.
-
 ### Tricks for lilypond-book
 
 Add this lines to your preamble to avoid the padding on the left side and keep the score justified :
