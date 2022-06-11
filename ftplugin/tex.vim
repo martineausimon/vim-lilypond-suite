@@ -19,18 +19,17 @@ function! g:DetectLilypondSyntax()
 			\ end="\\end{lilypond}" 
 			\ contains=@lilypond
 		highlight Snip ctermfg=white cterm=bold
-	else
-		if search("\\lilypond", "n")
-			syntax include @lilypond syntax/lilypond.vim
-			unlet b:current_syntax
-			syn region LyTeX 
-				\ matchgroup=Delimiter
-				\ start="\\lilypond{" 
-				\ matchgroup=Delimiter
-				\ end="}" 
-				\ contains=@lilypond
-			highlight Snip ctermfg=white cterm=bold
-		endif
+	endif
+	if search("\\lilypond", "n")
+		syntax include @lilypond syntax/lilypond.vim
+		unlet b:current_syntax
+		syn region LyTeX 
+			\ matchgroup=Snip
+			\ start="\\lilypond{" 
+			\ matchgroup=Snip
+			\ end="}" 
+			\ contains=@lilypond
+		highlight Snip ctermfg=white cterm=bold
 	endif
 endfunction
 
@@ -64,7 +63,6 @@ function! g:MakeLaTex()
 endfunction
 
 function! g:SelectMakePrgType()
-	execute ":w"
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 		noremap <buffer> <F5> ma:w<cr>
