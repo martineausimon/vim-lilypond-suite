@@ -43,21 +43,15 @@ function! g:CheckLilyPondCompile()
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc"
-		redraw!
 	else
 		execute 'silent:!rm -rf tmpOutDir'
 		execute "redraw!"
-		execute "$-1cc" 
-		redraw!
 	endif
 endfunction
 
 function! g:MakeLaTex()
 	execute 'silent:make!'
 	execute "redraw!"
-	execute "$-1cc"
-	redraw!
 endfunction
 
 function! g:SelectMakePrgType()
@@ -76,7 +70,11 @@ function! g:SelectMakePrgType()
 	endif
 endfunction
 
-noremap <buffer> <F5> ma:w<cr>:call SelectMakePrgType()<cr>`a
+command! Copen $-1cc | redraw
+
+noremap <buffer> <F5> 
+	\ ma:w<cr>:call SelectMakePrgType()<cr>
+	\ `a:Copen<cr>
 
 augroup LilypondSyntax
 	autocmd!
