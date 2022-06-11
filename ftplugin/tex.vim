@@ -5,6 +5,14 @@
 " Website:      https://github.com/martineausimon/vim-lilypond-suite
 " ===================================================================
 
+if exists('b:current_syntax')
+	finish 
+endif
+
+if exists("b:current_syntax")
+	unlet b:current_syntax
+endif
+
 function! g:DetectLilypondSyntax()
 unlet b:current_syntax
 syntax include @TEX syntax/tex.vim
@@ -57,33 +65,24 @@ endfunction
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-		noremap <buffer> <F5> ma:w<cr>
-			\ :call MakeLaTex()<cr>
-			\ `a
+		call MakeLaTex()
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
-			noremap <buffer> <F5> ma:w<cr>
-				\ :silent:make!<cr>
-				\ :call CheckLilyPondCompile()<cr>
-				\ `a
+			execute "silent:make!"
+			call CheckLilyPondCompile()
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-			noremap <buffer> <F5> ma:w<cr> 
-				\ :call MakeLaTex()<cr>
-				\ `a
+			call MakeLaTex()
 		endif
 	endif
 endfunction
 
+noremap <buffer> <F5> ma:w<cr>:call DetectLilypondSyntax()<cr>:call SelectMakePrgType()<cr>`a
+
 augroup LilypondSyntax
 	autocmd!
-	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
-augroup END
-
-augroup MakePrgType
-	autocmd!
-	autocmd BufWinEnter,BufWrite,InsertLeave * call SelectMakePrgType()
+	autocmd BufWinEnter,BufEnter * call DetectLilypondSyntax()
 augroup END
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
