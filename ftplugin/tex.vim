@@ -9,16 +9,14 @@ if exists('b:current_syntax')
 	finish 
 endif
 
+function! g:DetectLilypondSyntax()
 if exists("b:current_syntax")
 	unlet b:current_syntax
 endif
-
-function! g:DetectLilypondSyntax()
-unlet b:current_syntax
 syntax include @TEX syntax/tex.vim
 	if search("begin{lilypond}", "n")
-		unlet b:current_syntax
 		syntax include @lilypond syntax/lilypond.vim
+		unlet b:current_syntax
 		syntax region LyTeX 
 			\ matchgroup=Snip 
 			\ start="\\begin{lilypond}" 
@@ -27,8 +25,8 @@ syntax include @TEX syntax/tex.vim
 		highlight Snip ctermfg=white cterm=bold
 	endif
 	if search("\\lilypond", "n")
-		unlet b:current_syntax
 		syntax include @lilypond syntax/lilypond.vim
+		unlet b:current_syntax
 		syn region LyTeX 
 			\ matchgroup=Snip
 			\ start="\\lilypond{" 
@@ -78,11 +76,11 @@ function! g:SelectMakePrgType()
 	endif
 endfunction
 
-noremap <buffer> <F5> ma:w<cr>:call DetectLilypondSyntax()<cr>:call SelectMakePrgType()<cr>`a
+noremap <buffer> <F5> ma:w<cr>:call SelectMakePrgType()<cr>`a
 
 augroup LilypondSyntax
 	autocmd!
-	autocmd BufWinEnter,BufEnter * call DetectLilypondSyntax()
+	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
 augroup END
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
