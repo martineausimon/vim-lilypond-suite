@@ -5,30 +5,27 @@
 " Website:      https://github.com/martineausimon/vim-lilypond-suite
 " ===================================================================
 
-if exists('b:current_syntax')
-	finish 
-endif
-
 function! g:DetectLilypondSyntax()
+unlet b:current_syntax
+syntax include @TEX syntax/tex.vim
 	if search("begin{lilypond}", "n")
-		syntax include @lilypond syntax/lilypond.vim
 		unlet b:current_syntax
+		syntax include @lilypond syntax/lilypond.vim
 		syntax region LyTeX 
 			\ matchgroup=Snip 
 			\ start="\\begin{lilypond}" 
 			\ end="\\end{lilypond}" 
-			\ contains=@lilypond
+			\ containedin=@TEX contains=@lilypond
 		highlight Snip ctermfg=white cterm=bold
 	endif
 	if search("\\lilypond", "n")
-		syntax include @lilypond syntax/lilypond.vim
 		unlet b:current_syntax
+		syntax include @lilypond syntax/lilypond.vim
 		syn region LyTeX 
 			\ matchgroup=Snip
 			\ start="\\lilypond{" 
-			\ matchgroup=Snip
 			\ end="}" 
-			\ contains=@lilypond
+			\ containedin=@TEX contains=@lilypond
 		highlight Snip ctermfg=white cterm=bold
 	endif
 endfunction
@@ -49,11 +46,6 @@ function! g:CheckLilyPondCompile()
 		redraw!
 	endif
 endfunction
-
-augroup LilypondSyntax
-	autocmd!
-	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
-augroup END
 
 function! g:MakeLaTex()
 	execute 'silent:make!'
@@ -83,6 +75,11 @@ function! g:SelectMakePrgType()
 		endif
 	endif
 endfunction
+
+augroup LilypondSyntax
+	autocmd!
+	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
+augroup END
 
 augroup MakePrgType
 	autocmd!
