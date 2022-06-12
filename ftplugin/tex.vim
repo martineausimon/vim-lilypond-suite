@@ -49,15 +49,17 @@ function! g:CheckLilyPondCompile()
 	endif
 endfunction
 
-function! g:MakeLaTex()
-	execute 'silent:make!'
-	execute "redraw!"
-endfunction
+command! MakeLaTex silent:make! | redraw!
+
+"function! g:MakeLaTex()
+"	execute 'silent:make!'
+"	execute "redraw!"
+"endfunction
 
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-		call MakeLaTex()
+		:MakeLaTex
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
@@ -65,16 +67,16 @@ function! g:SelectMakePrgType()
 			call CheckLilyPondCompile()
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-			call MakeLaTex()
+			:MakeLaTex
 		endif
 	endif
 endfunction
 
-command! Copen $-1cc | redraw
+command! QFInfo $-1cc | redraw
 
 noremap <buffer> <F5> 
 	\ ma:w<cr>:call SelectMakePrgType()<cr>
-	\ `a:Copen<cr>
+	\ `a:QFInfo<cr>
 
 augroup LilypondSyntax
 	autocmd!

@@ -21,13 +21,12 @@ compiler lilypond
 noremap <buffer> <F4> ma0O\version<space>
 	\<Esc>:read<Space>!lilypond<Space>-v
 	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
-	\kJi"<esc>6la"<esc>`a
+	\kJi"<esc>6la"<esc>`a:echo ''<cr>
 
-command! Copen $cc | redraw
+command! QFInfo          $cc | redraw
+command! MakeLilyPond    silent:w | silent:make! | redraw!
 
-noremap <buffer> <F5> 
-	\ ma:w<cr>:silent:make!<cr>
-	\ :redraw!<cr>`a:Copen<cr>
+noremap <buffer> <F5> ma:MakeLilyPond<cr>`a:QFInfo<cr>
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
 
