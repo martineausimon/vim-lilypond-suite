@@ -22,7 +22,6 @@ syntax include @TEX syntax/tex.vim
 			\ start="\\begin{lilypond}" 
 			\ end="\\end{lilypond}" 
 			\ containedin=@TEX contains=@lilypond
-		highlight Snip ctermfg=white cterm=bold
 	endif
 	if search("\\lilypond", "n")
 		syntax include @lilypond syntax/lilypond.vim
@@ -32,55 +31,46 @@ syntax include @TEX syntax/tex.vim
 			\ start="\\lilypond{" 
 			\ end="}" 
 			\ containedin=@TEX contains=@lilypond
-		highlight Snip ctermfg=white cterm=bold
 	endif
+	highlight Snip ctermfg=white cterm=bold
 endfunction
+
+command! CleanTmpFolder     silent execute ":!rm -rf tmpOutDir" | redraw!
+command! QFInfo             $-1cc | redraw
+command! Make               silent:make! | redraw!
+command! MakeLaTex          silent:w | call SelectMakePrgType()
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
 		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %:r.tex'
-		execute 'silent:make!'
+		:Make
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
-		execute 'silent:!rm -rf tmpOutDir'
-		execute "redraw!"
+		:CleanTmpFolder
 	else
-		execute 'silent:!rm -rf tmpOutDir'
-		execute "redraw!"
+		:CleanTmpFolder
 	endif
 endfunction
-
-command! MakeLaTex silent:make! | redraw!
-
-"function! g:MakeLaTex()
-"	execute 'silent:make!'
-"	execute "redraw!"
-"endfunction
 
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-		:MakeLaTex
+		:Make
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
-			execute "silent:make!"
+			:Make
 			call CheckLilyPondCompile()
 		else
 			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
-			:MakeLaTex
+			:Make
 		endif
 	endif
 endfunction
 
-command! QFInfo $-1cc | redraw
-
-noremap <buffer> <F5> 
-	\ ma:w<cr>:call SelectMakePrgType()<cr>
-	\ `a:QFInfo<cr>
+noremap <buffer> <F5> ma:MakeLaTex<cr>`a:QFInfo<cr>
+noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
 
 augroup LilypondSyntax
 	autocmd!
 	autocmd BufWinEnter,BufEnter,BufWrite * call DetectLilypondSyntax()
 augroup END
-
-noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
