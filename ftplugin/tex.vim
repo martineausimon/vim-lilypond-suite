@@ -32,7 +32,7 @@ syntax include @TEX syntax/tex.vim
 			\ end="}" 
 			\ containedin=@TEX contains=@lilypond
 	endif
-	highlight Snip ctermfg=white cterm=bold
+	highlight Snip ctermfg=white cterm=bold guifg=white gui=bold
 endfunction
 
 command! CleanTmpFolder     silent execute ":!rm -rf tmpOutDir" | redraw!
@@ -67,8 +67,8 @@ function! g:SelectMakePrgType()
 	endif
 endfunction
 
-noremap <buffer> <F5> ma:MakeLaTex<cr>`a:QFInfo<cr>
-noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
+noremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
+noremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
 
 augroup LilypondSyntax
 	autocmd!

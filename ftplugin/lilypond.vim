@@ -26,7 +26,7 @@ noremap <buffer> <F4> ma0O\version<space>
 command! QFInfo          $cc | redraw
 command! MakeLilyPond    silent:w | silent:make! | redraw!
 
-noremap <buffer> <F5> ma:MakeLilyPond<cr>`a:QFInfo<cr>
+noremap <buffer> <F5> ma:MakeLilyPond<cr>:QFInfo<cr>`a
 
 noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
 
