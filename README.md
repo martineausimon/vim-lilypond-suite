@@ -1,6 +1,6 @@
 # vim-lilypond-suite
 
-This is a new filetype plugin for Lilypond, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for TeX files which allows embedded LilyPond syntax highlighting, and makeprg which support lilypond-book or lyluatex package out of the box.
+This is a new filetype plugin for **LilyPond**, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for **TeX** files which allows embedded LilyPond syntax highlighting, and makeprg which support `lilypond-book` or `lyluatex` package out of the box.
 
 * [Features](#Features)
 * [Installation](#Installation)
@@ -18,7 +18,7 @@ This is a new filetype plugin for Lilypond, with updated syntax and dictionary f
 
 * **Updated syntax file** using the last [Pygments syntax highlighter for LilyPond](https://github.com/pygments/pygments/blob/master/pygments/lexers/_lilypond_builtins.py)
 * **Simple ftplugin for LilyPond** with `makeprg`, correct `errorformat`
-* **ftplugin fo TeX files** whith detect and allows embedded LilyPond syntax, and adaptive `makeprg` function for `lyluatex` or `lilypond-book`
+* **ftplugin fo TeX files** whith detect and allows embedded LilyPond syntax, adaptive `makeprg` function for `lyluatex` or `lilypond-book`, correct `errorformat`
 
 <p align="center">
 <img src="https://github.com/martineausimon/vim-lilypond-suite/blob/main/screenshoot.png">
@@ -41,7 +41,8 @@ Or use some other plugin manager:
 
 ## Mappings
 
-* `F4` : insert current version
+* `F3` : toggle LilyPond syntax (LaTeX only)
+* `F4` : insert current version (LilyPond only)
 * `F5` : save & make
 * `F6` : view pdf (xdg-open)
 
@@ -50,72 +51,32 @@ Or use some other plugin manager:
 ### Recommended highlightings
 
 ```vim
-highlight Keyword cterm=bold ctermfg=yellow
-highlight Tag ctermfg=blue
-highlight Label ctermfg=lightyellow
-highlight StorageClass cterm=bold ctermfg=lightgreen
-highlight SpecialComment ctermfg=lightcyan
-highlight PreCondit ctermfg=cyan
+highlight Keyword 
+	\ cterm=bold ctermfg=yellow 
+	\ gui=bold guifg=yellow
+highlight Tag 
+	\ ctermfg=blue 
+	\ guifg=blue
+highlight Label 
+	\ ctermfg=lightyellow 
+	\ guifg=lightyellow
+highlight StorageClass 
+	\ cterm=bold ctermfg=lightgreen 
+	\ gui=bold guifg=lightgreen
+highlight SpecialComment 
+	\ ctermfg=lightcyan 
+	\ guifg=lightcyan
+highlight PreCondit 
+	\ ctermfg=cyan 
+	\ guifg=cyan
+
 ```
 
 ### Recommended settings for Auto-completion
 
-##### COC.NVIM 
+install [coc.nvim](https://github.com/neoclide/coc.nvim) and `coc-dictionary` & `coc-tabnine` : works out of the box !
 
-install [coc.nvim](https://github.com/neoclide/coc.nvim) and `coc-dictionary` & `coc-tabnine` : works out of the box
-
-Settings exemples :
-
-###### LUA
-
-```lua
-function escape_keycode(keycode)
-	return vim.api.nvim_replace_termcodes(keycode, true, true, true)
-end
-
-local function check_back_space()
-	local col = vim.fn.col(".") - 1
-	return col <= 0 or vim.fn.getline("."):sub(col, col):match("%s")
-end
-
-function tab_completion()
-	if vim.fn.pumvisible() > 0 then
-		return escape_keycode("<C-n>")
-	end
-	if check_back_space() then
-		return escape_keycode("<TAB>")
-	end
-	return vim.fn["coc#refresh"]()
-end
-
-function shift_tab_completion()
-	if vim.fn.pumvisible() > 0 then
-		return escape_keycode("<C-p>")
-	else
-		return escape_keycode("<C-h>")
-	end
-end
-
-map = vim.api.nvim_set_keymap
-
-if vim.fn.exists("*complete_info") then
-	map(
-		"i", "<CR>", 
-		"complete_info(['selected'])['selected'] != -1 ?" ..
-		"'<C-y>' : '<C-G>u<CR>'", 
-		{silent = true, expr = true, noremap = true}
-	)
-end
-
-map("i", "<TAB>", "v:lua.tab_completion()", { expr = true })
-map("i", "<S-TAB>", "v:lua.shift_tab_completion()", { expr = true })
-
-vim.o.completeopt="menu,menuone,noselect"
-
-vim.o.shortmess = vim.o.shortmess .. "c"
-```
-
-###### VIMSCRIPT
+#### My settings for coc.nvim
 
 ```vim
 inoremap <silent><expr> <TAB>
@@ -131,81 +92,29 @@ endfunction
 
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 ```
-##### NVIM.CMP
 
-Install [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp) and [uga-rosa/cmp-dictionary](https://github.com/uga-rosa/cmp-dictionary)
+If you want to use another completion plugin like [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp) with [uga-rosa/cmp-dictionary](https://github.com/uga-rosa/cmp-dictionary), vim-lilypond-suite uses the following dictionary files :
 
-Add this lines to your `nvim/init.lua` :
-
-```lua
-local cmp = require('cmp')
-
-require("cmp").setup({
-	mapping = {
-		['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
-		['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
-	},
-})
-```
-
-Add this lines to your `ftplugin/lilypond.lua` :
-
-```lua
-vim.opt.iskeyword:append("-")
-vim.opt.iskeyword:append([[\]])
-
-require('cmp').setup.buffer {
-	formatting = {
-		format = function(entry, item)
-			item.kind = ({
-				Text = "",
-				})[item.kind]
-			item.menu = ({
-				buffer = "ﰮ ",
-				dictionary = " ",
-				path = " ",
-				})[entry.source.name]
-			return item
-		end,
-	},
-	sources = {
-		{ 
-			name = 'buffer',
-			keyword_length = 2,
-		},
-		{ name = 'path' },
-		{ 
-			name = 'dictionary',
-			keyword_length = 2,
-		},
-	},
-}
-
-require("cmp_dictionary").setup({
-	dic = {
-		["lilypond"] = {
-			"$LILYDICTPATH/grobs",
-			"$LILYDICTPATH/keywords",
-			"$LILYDICTPATH/musicFunctions",
-			"$LILYDICTPATH/articulations",
-			"$LILYDICTPATH/grobProperties",
-			"$LILYDICTPATH/paperVariables",
-			"$LILYDICTPATH/headerVariables",
-			"$LILYDICTPATH/contextProperties",
-			"$LILYDICTPATH/clefs",
-			"$LILYDICTPATH/repeatTypes",
-			"$LILYDICTPATH/languageNames",
-			"$LILYDICTPATH/accidentalsStyles",
-			"$LILYDICTPATH/scales",
-			"$LILYDICTPATH/musicCommands",
-			"$LILYDICTPATH/markupCommands",
-			"$LILYDICTPATH/contextsCmd",
-			"$LILYDICTPATH/dynamics",
-			"$LILYDICTPATH/contexts",
-			"$LILYDICTPATH/translators",
-		}
-	},
-})
+```bash
+$LILYDICTPATH/grobs
+$LILYDICTPATH/keywords
+$LILYDICTPATH/musicFunctions
+$LILYDICTPATH/articulations
+$LILYDICTPATH/grobProperties
+$LILYDICTPATH/paperVariables
+$LILYDICTPATH/headerVariables
+$LILYDICTPATH/contextProperties
+$LILYDICTPATH/clefs
+$LILYDICTPATH/repeatTypes
+$LILYDICTPATH/languageNames
+$LILYDICTPATH/accidentalsStyles
+$LILYDICTPATH/scales
+$LILYDICTPATH/musicCommands
+$LILYDICTPATH/markupCommands
+$LILYDICTPATH/contextsCmd
+$LILYDICTPATH/dynamics
+$LILYDICTPATH/contexts
+$LILYDICTPATH/translators
 ```
 
 ### My Neovim settings for Point & Click
@@ -229,6 +138,16 @@ Reboot or reload with `. ~/.profile`
 ## LaTex
 
 This plugin works with `lilypond-book` by default if the `.tex` file contains `\begin{lilypond}`. To use `lyluatex`, just add `\usepackage{lyluatex}` to your preamble. 
+
+Syntax highlighting can be slow with embedded LilyPond, you can use `<F3>` to activate or deactivate it.
+
+### Clean log files on exit
+
+Add this line to your `.vimrc` to remove log files on exit :
+
+```vim
+let b:CleanTexFiles='1'
+```
 
 ### Tricks for lilypond-book
 
