@@ -8,8 +8,6 @@ This is a new filetype plugin for **LilyPond**, with updated syntax and dictiona
 * [Settings](#Settings)
 	* Recommended highlightings
 	* Recommended settings for Auto-completion
-		* coc.nvim
-		* nvim-cmp
 	* Point & click configuration
 * [LaTex](#LaTex)
 * [License](#License)
