@@ -98,6 +98,12 @@ function! g:LilyPondEfm()
 	setlocal efm+=%-G%.%#
 endfunction
 
+function! g:CleanTexFiles()
+	if exists('b:CleanTexFiles')
+		silent! | !rm -rf %<.log %<.aux %<.out tmp-ly/
+	endif
+endfunction
+
 noremap <buffer> <F3> :ToggleSyn<cr>
 noremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
 noremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
@@ -111,9 +117,3 @@ augroup CleanFiles
 	autocmd!
 	autocmd VimLeave *.tex call CleanTexFiles()
 augroup END
-
-function! g:CleanTexFiles()
-	if exists('b:CleanTexFiles')
-		silent! | !rm -rf %<.log %<.aux %<.out tmp-ly/
-	endif
-endfunction
