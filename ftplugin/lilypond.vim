@@ -15,20 +15,15 @@ setlocal autoindent
 setlocal shiftwidth=2
 setlocal tabstop=2
 setlocal showmatch
+setlocal complete-="k,t" complete+=k
+setlocal iskeyword+=\
+setlocal iskeyword+=-
+setlocal shortmess+=c
 
 compiler lilypond
 
-noremap <buffer> <F4> ma0O\version<space>
-	\<Esc>:read<Space>!lilypond<Space>-v
-	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
-	\kJi"<esc>6la"<esc>`a:echo ''<cr>
-
-command! QFInfo          $cc | redraw
-command! MakeLilyPond    silent:w | silent:make! | redraw!
-
-noremap <buffer> <F5> ma:MakeLilyPond<cr>:QFInfo<cr>`a
-
-noremap <buffer> <F6> :!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
+command! QFInfo        $cc      | redraw
+command! MakeLilyPond  silent:w | silent:make! | redraw!
 
 let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let $LILYDICTPATH = s:path . '/../lilywords'
@@ -53,9 +48,18 @@ setlocal dictionary+=$LILYDICTPATH/dynamics
 setlocal dictionary+=$LILYDICTPATH/contexts
 setlocal dictionary+=$LILYDICTPATH/translators
 
-setlocal complete-="k,t" complete+=k
+nnoremap <buffer> <F4> ma0O\version<space>
+	\<Esc>:read<Space>!lilypond<Space>-v
+	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
+	\kJi"<esc>6la"<esc>`a:echo ''<cr>
 
-setlocal iskeyword+=\
-setlocal iskeyword+=-
+inoremap <buffer> <F4> <esc>ma0O\version<space>
+	\<Esc>:read<Space>!lilypond<Space>-v
+	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
+	\kJi"<esc>6la"<esc>`a:echo ''<cr>a
 
-setlocal shortmess+=c
+nnoremap <buffer> <F5> ma:MakeLilyPond<cr>:QFInfo<cr>`a
+inoremap <buffer> <F5> <esc>ma:MakeLilyPond<cr>:QFInfo<cr>`aa
+
+nnoremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>
+inoremap <buffer> <F6> <esc>:silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>a

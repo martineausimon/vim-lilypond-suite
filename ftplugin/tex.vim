@@ -51,13 +51,11 @@ command! QFInfo         $cc | redraw
 command! Make           silent:make! | redraw!
 command! MakeLaTex      silent:w | call SelectMakePrgType()
 command! ToggleSyn      silent:call ToggleLyTeXSyntax()
-command! LuaLaTexEfm    call LuaLaTexEfm()
-command! LilyPondEfm    call LilyPondEfm()
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
 		let &makeprg = 'cd tmpOutDir/ && lualatex \-file\-line\-error\ --shell-escape %:r.tex'
-		LuaLaTexEfm
+		call LuaLaTexEfm()
 		Make
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
 		CleanTmpFolder
@@ -69,17 +67,17 @@ endfunction
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
 		setlocal makeprg=lualatex\ \-file\-line\-error\ --shell-escape\ \"%<\"
-		LuaLaTexEfm
+		call LuaLaTexEfm()
 		Make
 	else 
 		if search("begin{lilypond}", "n")
 			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
-			LilyPondEfm
+			call LilyPondEfm()
 			Make
 			call CheckLilyPondCompile()
 		else
 			setlocal makeprg=lualatex\ \-file\-line\-error\ --shell-escape\ \"%<\"
-			LuaLaTexEfm
+			call LuaLaTexEfm()
 			Make
 		endif
 	endif
@@ -104,9 +102,12 @@ function! g:CleanTexFiles()
 	endif
 endfunction
 
-noremap <buffer> <F3> :ToggleSyn<cr>
-noremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
-noremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr><cr>
+nnoremap <buffer> <F3> :ToggleSyn<cr>
+inoremap <buffer> <F3> <esc>:ToggleSyn<cr>a
+nnoremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
+inoremap <buffer> <F5> <esc>ma:MakeLaTex<cr>:QFInfo<cr>`aa
+nnoremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>
+inoremap <buffer> <F6> <esc>:silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>a
 
 augroup LilypondSyntax
 	autocmd!
