@@ -147,6 +147,14 @@ Add this line to your `.vimrc` to remove log files on exit :
 let b:CleanTexFiles='1'
 ```
 
+### Display Overfull messages in QuickFix
+
+Add this line to your `.vimrc` :
+
+```vim
+let b:TexQfOverfull='1'
+```
+
 ### Tricks for lilypond-book
 
 Add this lines to your preamble to avoid the padding on the left side and keep the score justified :

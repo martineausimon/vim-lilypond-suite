@@ -54,7 +54,7 @@ command! ToggleSyn      silent:call ToggleLyTeXSyntax()
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
-		let &makeprg = 'cd tmpOutDir/ && lualatex \-file\-line\-error\ --shell-escape %:r.tex'
+		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %:r.tex'
 		call LuaLaTexEfm()
 		Make
 		execute 'silent:!mv tmpOutDir/%:r.pdf .'
@@ -66,7 +66,7 @@ endfunction
 
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
-		setlocal makeprg=lualatex\ \-file\-line\-error\ --shell-escape\ \"%<\"
+		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 		call LuaLaTexEfm()
 		Make
 	else 
@@ -76,7 +76,7 @@ function! g:SelectMakePrgType()
 			Make
 			call CheckLilyPondCompile()
 		else
-			setlocal makeprg=lualatex\ \-file\-line\-error\ --shell-escape\ \"%<\"
+			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
 			call LuaLaTexEfm()
 			Make
 		endif
@@ -84,9 +84,17 @@ function! g:SelectMakePrgType()
 endfunction
 
 function! g:LuaLaTexEfm()
-	setlocal efm=%+G%f:%l:,\ %f:%l:\ %m
+	setlocal efm=%+G!\ LaTeX\ %trror:\ %m,
+		\%+GLaTeX\ %.%#Warning:\ %.%#line\ %l%.%#,
+		\%GLaTeX\ %.%#Warning:\ %m,
+		\%+G!\ %m
+	setlocal efm+=%El.%l\ %m
+	setlocal efm+=%+G%.%#Fatal%.%#
 	setlocal efm+=%+G%.%#Output%.%#
-	setlocal efm+=%-G%.%#
+	setlocal efm+=%-G%.%#,
+	if exists('b:TexQfOverfull')
+		setlocal efm+=%+G%.%#\ at\ lines\ %l--%*\\d
+	endif
 endfunction
 
 function! g:LilyPondEfm()
