@@ -86,12 +86,12 @@ endfunction
 function! g:LuaLaTexEfm()
 	setlocal efm=%+G!\ LaTeX\ %trror:\ %m,
 		\%+GLaTeX\ %.%#Warning:\ %.%#line\ %l%.%#,
-		\%GLaTeX\ %.%#Warning:\ %m,
+		\%+GLaTeX\ %.%#Warning:\ %m,
 		\%+G!\ %m
-	setlocal efm+=%El.%l\ %m
+	setlocal efm+=%+El.%l\ %m
 	setlocal efm+=%+G%.%#Fatal%.%#
-	setlocal efm+=%+G%.%#Output%.%#
-	setlocal efm+=%-G%.%#,
+	setlocal efm+=%+GOutput\ written\ on%.%#
+	setlocal efm+=%-G%.%#
 	if exists('b:TexQfOverfull')
 		setlocal efm+=%+G%.%#\ at\ lines\ %l--%*\\d
 	endif
