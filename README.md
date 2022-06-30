@@ -6,10 +6,14 @@ This is a new filetype plugin for **LilyPond**, with updated syntax and dictiona
 * [Installation](#Installation)
 * [Mappings](#Mappings)
 * [Settings](#Settings)
+	* QuickFix mode
 	* Recommended highlightings
 	* Recommended settings for Auto-completion
 	* Point & click configuration
 * [LaTex](#LaTex)
+	* Clean log files on exit
+	* Overfull messages in QuickFix
+	* Tricks for lilypond-book
 * [License](#License)
 
 ## Features
@@ -45,6 +49,14 @@ Or use some other plugin manager:
 * `F6` : view pdf (xdg-open)
 
 ## Settings
+
+### QuickFix mode
+
+By default this plugin uses `:cw` after compile. To display only a result message in vim's message line after make, add this line to your `.vimrc` :
+
+```vim
+let g:vls_qf_mode='1'
+```
 
 ### Recommended highlightings
 
@@ -144,7 +156,7 @@ Syntax highlighting can be slow with embedded LilyPond, you can use `<F3>` to ac
 Add this line to your `.vimrc` to remove log files on exit :
 
 ```vim
-let b:CleanTexFiles='1'
+let g:vls_clean_tex_files='1'
 ```
 
 ### Display Overfull messages in QuickFix
@@ -152,7 +164,7 @@ let b:CleanTexFiles='1'
 Add this line to your `.vimrc` :
 
 ```vim
-let b:TexQfOverfull='1'
+let g:vls_tex_qf_overfull='1'
 ```
 
 ### Tricks for lilypond-book
