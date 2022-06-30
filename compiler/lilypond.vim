@@ -13,7 +13,12 @@ let current_compiler = "lilypond"
 
 setlocal makeprg=lilypond\ %
 
-setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
-setlocal efm+=%+G%.%#err%.%#
-setlocal efm+=%+G%.%#succ%.%#
-setlocal efm+=%-G%.%#
+if b:vls_qf_mode == 1
+	setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
+	setlocal efm+=%+G%.%#err%.%#
+	setlocal efm+=%+G%.%#succ%.%#
+	setlocal efm+=%-G%.%#
+else
+	setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
+	setlocal efm+=%-G%.%#
+endif

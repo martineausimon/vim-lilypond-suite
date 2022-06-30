@@ -18,10 +18,10 @@ setlocal mps+=<:>
 
 syn case match
 
-syn cluster lilyMatchGroup contains=lilyUsrVar,lilyString,lilyComment,lilyNumber,lilySpecial,lilyArticulation,lilyGrobs,lilyKeywords,lilyMusicCommands,lilyMusicFunctions,lilyMarkupCommands,lilyScales,lilyArticulations,lilyDynamics,lilyGrobProperties,lilyHeaderVariables,lilyPaperVariables,lilyContextProperties,lilyContextsCmd,lilyContexts,lilyTranslators,lilyPitches,lilyClefs,lilyRepeatTypes,lilyPitchLanguageNames,lilyAccidentalsStyles,lilyMisc
+"syn cluster lilyMatchGroup contains=lilyUsrVar,lilyString,lilyComment,lilyNumber,lilySpecial,lilyArticulation,lilyGrobs,lilyKeywords,lilyMusicCommands,lilyMusicFunctions,lilyMarkupCommands,lilyScales,lilyArticulations,lilyDynamics,lilyGrobProperties,lilyHeaderVariables,lilyPaperVariables,lilyContextProperties,lilyContextsCmd,lilyContexts,lilyTranslators,lilyPitches,lilyClefs,lilyRepeatTypes,lilyPitchLanguageNames,lilyAccidentalsStyles,lilyMisc
 
-syn match  lilyValue "#[^'(0-9 ]*[\n ]"ms=s+1
-syn match  lilySymbol "#'[^'(0-9 ]*[\n ]"ms=s+2
+syn match  lilyValue         "#[^'(0-9 ]*[\n ]"ms=s+1
+syn match  lilySymbol        "#'[^'(0-9 ]*[\n ]"ms=s+2
 syn region lilyString        start=/"/ end=/"/ skip=/\\"/
 syn region lilyComment       start="%{" skip="%$" end="%}"
 syn region lilyComment       start="%\([^{]\|$\)" end="$"

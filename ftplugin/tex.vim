@@ -9,6 +9,21 @@ if exists('b:current_syntax')
 	finish 
 endif
 
+if exists('g:vls_clean_tex_files')
+else
+	let g:vls_clean_tex_files = 0
+endif
+
+if exists('g:vls_qf_mode')
+else
+	let g:vls_qf_mode = 0
+endif
+
+if exists('g:vls_tex_qf_overfull')
+else
+	let g:vls_tex_qf_overfull = 0
+endif
+
 function! g:ToggleLyTeXSyntax()
 	if exists('b:lytexSyn')
 		unlet b:lytexSyn
@@ -47,10 +62,19 @@ function! g:DetectLilypondSyntax()
 endfunction
 
 command! CleanTmpFolder silent execute ":!rm -rf tmpOutDir" | redraw!
-command! QFInfo         $cc | redraw
 command! Make           silent:make! | redraw!
 command! MakeLaTex      silent:w | call SelectMakePrgType()
 command! ToggleSyn      silent:call ToggleLyTeXSyntax()
+
+if g:vls_qf_mode == "1"
+	command! QFInfo $cc | redraw
+	nnoremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
+	inoremap <buffer> <F5> <esc>ma:MakeLaTex<cr>:QFInfo<cr>`aa
+else 
+	command! QFInfo cw | redraw
+	nnoremap <buffer> <F5> ma:cclose<cr>:MakeLaTex<cr>:silent:QFInfo<cr><C-w><C-p><C-l>`a
+	inoremap <buffer> <F5> <esc>ma:cclose<cr>:MakeLaTex<cr>:silent:QFInfo<cr><C-w><C-p><C-l>`aa
+endif
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
@@ -89,31 +113,40 @@ function! g:LuaLaTexEfm()
 		\%+GLaTeX\ %.%#Warning:\ %m,
 		\%+G!\ %m
 	setlocal efm+=%+El.%l\ %m
-	setlocal efm+=%+G%.%#Fatal%.%#
-	setlocal efm+=%+GOutput\ written\ on%.%#
-	setlocal efm+=%-G%.%#
-	if exists('b:TexQfOverfull')
+	if g:vls_qf_mode == 1
+		setlocal efm+=%+G%.%#Fatal%.%#
+		setlocal efm+=%+GOutput\ written\ on%.%#
+		setlocal efm+=%-G%.%#
+	else
+		setlocal efm+=%-G%.%#
+	endif
+	if g:vls_tex_qf_overfull == 1
 		setlocal efm+=%+G%.%#\ at\ lines\ %l--%*\\d
 	endif
 endfunction
 
 function! g:LilyPondEfm()
-	setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
-	setlocal efm+=%+G%.%#err%.%#
-	setlocal efm+=%+G%.%#succ%.%#
-	setlocal efm+=%-G%.%#
+	if g:vls_qf_mode == 1
+		setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
+		setlocal efm+=%+G%.%#err%.%#
+		setlocal efm+=%+G%.%#succ%.%#
+		setlocal efm+=%-G%.%#
+	else
+		setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
+		setlocal efm+=%-G%.%#
+	endif
 endfunction
 
 function! g:CleanTexFiles()
-	if exists('b:CleanTexFiles')
+	if g:vls_clean_tex_files == "1"
 		silent! | !rm -rf %<.log %<.aux %<.out tmp-ly/
 	endif
 endfunction
 
 nnoremap <buffer> <F3> :ToggleSyn<cr>
 inoremap <buffer> <F3> <esc>:ToggleSyn<cr>a
-nnoremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
-inoremap <buffer> <F5> <esc>ma:MakeLaTex<cr>:QFInfo<cr>`aa
+"nnoremap <buffer> <F5> ma:MakeLaTex<cr>:QFInfo<cr>`a
+"inoremap <buffer> <F5> <esc>ma:MakeLaTex<cr>:QFInfo<cr>`aa
 nnoremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>
 inoremap <buffer> <F6> <esc>:silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>a
 
@@ -121,6 +154,10 @@ augroup LilypondSyntax
 	autocmd!
 	autocmd BufWinEnter,BufEnter * call DetectLilypondSyntax()
 augroup END
+
+hi QuickFixLine
+	\ ctermfg=NONE cterm=bold 
+	\ guifg=NONE gui=bold
 
 augroup CleanFiles
 	autocmd!

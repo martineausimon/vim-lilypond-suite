@@ -9,6 +9,11 @@ if exists("b:did_ftplugin")
 	finish
 endif
 
+if exists('g:vls_qf_mode')
+else
+	let g:vls_qf_mode = 0
+endif
+
 let b:did_ftplugin = 1
 
 setlocal autoindent
@@ -20,9 +25,22 @@ setlocal iskeyword+=\
 setlocal iskeyword+=-
 setlocal shortmess+=c
 
+hi QuickFixLine
+	\ ctermfg=NONE cterm=bold 
+	\ guifg=NONE gui=bold
+
 compiler lilypond
 
-command! QFInfo        $cc      | redraw
+if g:vls_qf_mode == "1"
+	command! QFInfo $cc | redraw
+	nnoremap <buffer> <F5> ma:MakeLilyPond<cr>:QFInfo<cr>`a
+	inoremap <buffer> <F5> <esc>ma:MakeLilyPond<cr>:QFInfo<cr>`aa
+else 
+	command! QFInfo cw
+	nnoremap <buffer> <F5> ma:MakeLilyPond<cr>:silent:QFInfo<cr><cr><C-l>`a
+	inoremap <buffer> <F5> <esc>ma:MakeLilyPond<cr>:silent:QFInfo<cr><cr><C-l>`aa
+endif
+
 command! MakeLilyPond  silent:w | silent:make! | redraw!
 
 let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
@@ -58,8 +76,6 @@ inoremap <buffer> <F4> <esc>ma0O\version<space>
 	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
 	\kJi"<esc>6la"<esc>`a:echo ''<cr>a
 
-nnoremap <buffer> <F5> ma:MakeLilyPond<cr>:QFInfo<cr>`a
-inoremap <buffer> <F5> <esc>ma:MakeLilyPond<cr>:QFInfo<cr>`aa
 
 nnoremap <buffer> <F6> :silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>
 inoremap <buffer> <F6> <esc>:silent:!xdg-open "%<.pdf" 2>/dev/null &<cr>a
