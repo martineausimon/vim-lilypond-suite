@@ -19,7 +19,6 @@ let b:did_ftplugin = 1
 setlocal autoindent
 setlocal shiftwidth=2
 setlocal tabstop=2
-setlocal showmatch
 setlocal complete-="k,t" complete+=k
 setlocal iskeyword+=\
 setlocal iskeyword+=-
