@@ -11,7 +11,7 @@ endif
 
 let current_compiler = "lilypond"
 
-setlocal makeprg=lilypond\ %
+setlocal makeprg=lilypond\ "%"
 
 if g:vls_qf_mode == 1
 	setlocal efm=%+G%f:%l:%c:,\ %f:%l:%c:\ %m
