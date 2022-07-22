@@ -78,10 +78,10 @@ endif
 
 function! g:CheckLilyPondCompile()
 	if !empty(glob("tmpOutDir/*.tex"))
-		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %:r.tex'
+		let &makeprg = 'cd tmpOutDir/ && lualatex --shell-escape %:r:S.tex'
 		call LuaLaTexEfm()
 		Make
-		execute 'silent:!mv tmpOutDir/%:r.pdf .'
+		execute 'silent:!mv tmpOutDir/%:r:S.pdf .'
 		CleanTmpFolder
 	else
 		CleanTmpFolder
@@ -90,17 +90,17 @@ endfunction
 
 function! g:SelectMakePrgType()
 	if search("usepackage{lyluatex}", "n")
-		setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
+		setlocal makeprg=lualatex\ --shell-escape\ %:p:S
 		call LuaLaTexEfm()
 		Make
 	else 
 		if search("begin{lilypond}", "n")
-			let &makeprg="lilypond-book --output=tmpOutDir --pdf %"
+			let &makeprg="lilypond-book --output=tmpOutDir --pdf %:p:S"
 			call LilyPondEfm()
 			Make
 			call CheckLilyPondCompile()
 		else
-			setlocal makeprg=lualatex\ --shell-escape\ \"%<\"
+			setlocal makeprg=lualatex\ --shell-escape\ %:p:S
 			call LuaLaTexEfm()
 			Make
 		endif
