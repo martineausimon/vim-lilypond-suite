@@ -1,6 +1,8 @@
 # vim-lilypond-suite
 
-This is a new filetype plugin for **LilyPond**, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for **TeX** files which allows embedded LilyPond syntax highlighting, and makeprg which support `lilypond-book` or `lyluatex` package out of the box.
+This is a filetype plugin for **LilyPond**, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for **TeX** files which allows embedded LilyPond syntax highlighting, and makeprg which support `lilypond-book` or `lyluatex` package out of the box.
+
+**EDIT** : If you use Neovim, you should have a look to [nvim-lilypond-suite](https://github.com/martineausimon/nvim-lilypond-suite)
 
 * [Features](#Features)
 * [Installation](#Installation)
