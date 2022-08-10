@@ -52,6 +52,14 @@ Or use some other plugin manager:
 
 ## Settings
 
+### Lighter syntax highlightings
+
+The full syntax highlighting can be a little slow. Add this line to your `init.lua` to use a lighter syntax file :
+
+```vim
+let g:vls_light='true'
+```
+
 ### QuickFix mode
 
 By default this plugin uses `:cw` after compile. To display only a result message in vim's message line after make, add this line to your `.vimrc` :
