@@ -52,8 +52,9 @@ function! g:DetectLilypondSyntax()
 		syntax include @lilypond syntax/lilypond.vim
 		unlet b:current_syntax
 		syn region LyTeX 
-			\ matchgroup=Snip
+			\ matchgroup=Delimiter
 			\ start="\\lilypond{" 
+			\ matchgroup=Delimiter
 			\ end="}" 
 			\ containedin=@TEX contains=@lilypond
 		let b:lytexSyn = 1
