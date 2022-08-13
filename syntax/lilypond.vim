@@ -62,8 +62,8 @@ syn region lilyMatcher
 	\ contains=@lilyMatchGroup 
 	\ fold
 
-syn match lilyGrobs					 "\<\u\a\+\>"
-syn match lilyPitches				 "\<\([a-g]\|s\|R\|r\)
+syn match lilyGrobs          "\<\u\a\+\>"
+syn match lilyPitches        "\<\([a-g]\|s\|R\|r\)
 	\\(\(\is\)\+\|\(es\)\+\|\|\)
 	\\(\'\+\|\,\+\|\)
 	\\(?\|!\|\|\)
@@ -71,9 +71,9 @@ syn match lilyPitches				 "\<\([a-g]\|s\|R\|r\)
 	\\(\M.\+\|\|\)
 	\\(\A\|\n\)"me=e-1
 syn match lilyMarkupCommands "[-_^]\?\\\([^ ]*[\n ]\)"
-syn match lilyFunctions			 "[-_^]\?\\\([^ ]*[\n ]\)"
-syn match lilyVar						 "\(\i\|\-\)\+\s\+="me=e-1
-syn match lilyVar						 "\.\l\(\-\|\u\|\l\)\+"ms=s+1
+syn match lilyFunctions      "[-_^]\?\\\([^ ]*[\n ]\)"
+syn match lilyVar            "\(\i\|\-\)\+\s\+="me=e-1
+syn match lilyVar            "\.\l\(\-\|\u\|\l\)\+"ms=s+1
 
 syn match lilyPaperVariables "\(auto-first-page-number\|binding-offset\|blank-last-page-penalty\|blank-page-penalty\|bottom-margin\|check-consistency\|evenHeaderMarkup\|first-page-number\|footnote-separator-markup\|horizontal-shift\|indent\|inner-margin\|last-bottom-spacing\|left-margin\|line-width\|markup-markup-spacing\|markup-system-spacing\|max-systems-per-page\|min-systems-per-page\|minimum-distance\|oddHeaderMarkup\|outer-margin\|page-breaking-system-system-spacing\|page-breaking\|page-count\|page-number-type\|page-spacing-weight\|paper-height\|paper-width\|print-all-headers\|print-first-page-number\|ragged-bottom\|ragged-last-bottom\|ragged-last\|ragged-right\|right-margin\|score-markup-spacing\|score-system-spacing\|short-indent\|stretchability\|system-count\|system-separator-markup\|system-system-spacing\|systems-per-page\|top-margin\|top-markup-spacing\|top-system-spacing\|two-sided\)\(\A\|\n\)"me=e-1
 
@@ -93,15 +93,15 @@ syn match lilyTranslators "\u\l\+\(_\)\w*\(engraver\|performer\|translator\)"
 
 syn match lilyMisc "\(##f\|##t\|#f\|#t\)\(\A\|\n\)"me=e,ms=s
 
-syn match  lilyValue				"#[^'(0-9 ]*[\n ]"ms=s+1
-syn match  lilySymbol				"#'[^'(0-9 ]*[\n ]"ms=s+2
-syn region lilyString				start=/"/						 end=/"/	 skip=/\\"/
-syn region lilyComment			start="%{"					 skip="%$" end="%}"
-syn region lilyComment			start="%\([^{]\|$\)" end="$"
-syn match  lilySpecial			"[(~)]\|[(*)]\|[(:)]"
-syn match  lilyDynamics			"\\[<!>\\]"
+syn match  lilyValue        "#[^'(0-9 ]*[\n ]"ms=s+1
+syn match  lilySymbol       "#'[^'(0-9 ]*[\n ]"ms=s+2
+syn region lilyString       start=/"/            end=/"/   skip=/\\"/
+syn region lilyComment      start="%{"           skip="%$" end="%}"
+syn region lilyComment      start="%\([^{]\|$\)" end="$"
+syn match  lilySpecial      "[(~)]\|[(*)]\|[(:)]"
+syn match  lilyDynamics     "\\[<!>\\]"
 syn match  lilyArticulation "[-_^][-_^+|>.]"
-syn match  lilyNumber				"[-_^.]\?\(\-\.\|\|\)\d\+[.]\?"
+syn match  lilyNumber       "[-_^.]\?\(\-\.\|\|\)\d\+[.]\?"
 
 syn include @Scheme syntax/scheme.vim
 unlet b:current_syntax
