@@ -54,11 +54,9 @@ Or use some other plugin manager:
 
 ### Lighter syntax highlightings
 
-The full syntax highlighting can be a little slow. Add this line to your `init.lua` to use a lighter syntax file :
+Since the last big update [c5ee51b](https://github.com/martineausimon/vim-lilypond-suite/commit/c5ee51b1a03423d42e0feebad31d65623a92f1fa), I changed my method for syntax highlighting and avoided word lists as much as possible, for more lightness. For now only the default language works for note pitches.
 
-```vim
-let g:vls_light='true'
-```
+>TODO : create pitches pattern for other languages
 
 ### QuickFix mode
 
@@ -80,12 +78,12 @@ highlight Tag
 highlight Label 
 	\ ctermfg=lightyellow 
 	\ guifg=lightyellow
-highlight StorageClass 
-	\ cterm=bold ctermfg=lightgreen 
-	\ gui=bold guifg=lightgreen
 highlight SpecialComment 
 	\ ctermfg=lightcyan 
 	\ guifg=lightcyan
+highlight SpecialChar
+	\ cterm=bold ctermfg=lightmagenta
+	\ gui=bold guifg=lightcyan
 highlight PreCondit 
 	\ ctermfg=cyan 
 	\ guifg=cyan
