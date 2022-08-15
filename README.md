@@ -8,6 +8,7 @@ This is a filetype plugin for **LilyPond**, with updated syntax and dictionary f
 * [Installation](#Installation)
 * [Mappings](#Mappings)
 * [Settings](#Settings)
+	* Lighter syntax highlighting
 	* QuickFix mode
 	* Recommended highlightings
 	* Recommended settings for Auto-completion
@@ -52,7 +53,7 @@ Or use some other plugin manager:
 
 ## Settings
 
-### Lighter syntax highlightings
+### Lighter syntax highlighting
 
 Since the last big update [c5ee51b](https://github.com/martineausimon/vim-lilypond-suite/commit/c5ee51b1a03423d42e0feebad31d65623a92f1fa), I changed my method for syntax highlighting and avoided word lists as much as possible, for more lightness. For now only the default language works for note pitches.
 
