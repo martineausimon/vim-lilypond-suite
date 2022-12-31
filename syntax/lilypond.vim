@@ -2,6 +2,10 @@ if exists('b:current_syntax')
   finish 
 endif
 
+if !exists('g:lilypond_language')
+  let g:lilypond_language = "default"
+endif
+
 let s:keepcpo= &cpo
 set cpo&vim
 
@@ -75,23 +79,32 @@ syn match lilyGrobs          "\<\u\a\+\>"
 syn match lilyMarkupCommands "\\\a\(\i\|\-\)\+"
 syn match lilyFunctions      "\\\a\(\i\|\-\)\+"
 
-syn match lilyContexts "\(\\\|\<\)\(AncientRemoveEmptyStaffContext\|ChoirStaff\|ChordNames\|CueVoice\|Devnull\|DrumStaff\|DrumVoice\|Dynamics\|FiguredBass\|FretBoards\|Global\|GrandStaff\|GregorianTranscriptionStaff\|GregorianTranscriptionVoice\|KievanStaff\|KievanVoice\|Lyrics\|MensuralStaff\|MensuralVoice\|NoteNames\|NullVoice\|OneStaff\|PetrucciStaff\|PetrucciVoice\|PianoStaff\|RemoveEmptyDrumStaffContext\|RemoveEmptyRhythmicStaffContext\|RemoveEmptyStaffContext\|RemoveEmptyTabStaffContext\|RhythmicStaff\|Score\|Staff\|StaffGroup\|TabStaff\|TabVoice\|VaticanaStaff\|VaticanaVoice\|Voice\)\(\A\|\n\)"me=e-1
-
 syn match lilyDynamics "[-_^]\?\\\(cr\|cresc\|decr\|decresc\|dim\|endcr\|endcresc\|enddecr\|enddecresc\|enddim\|f\|ff\|fff\|ffff\|fffff\|fp\|fz\|mf\|mp\|n\|p\|pp\|ppp\|pppp\|ppppp\|rfz\|sf\|sff\|sfp\|sfz\|sp\|spp\)\(\A\|\n\)"me=e-1
 
-syn match lilyPitches        "\<\([a-g]\|s\|R\|r\)
-  \\(\(\is\)\+\|\(es\)\+\|\|\)
-  \\(\'\+\|\,\+\|\)
-  \\(?\|!\|\|\)
-  \\(1024\|512\|256\|128\|64\|32\|16\|8\|4\|2\|1\|\)
-  \\(\M.\+\|\|\)
-  \\(\A\|\n\)"me=e-1
+if g:lilypond_language == "français"
+  syn match lilyPitches "\<\(la\|si\|do\|re\|ré\|mi\|fa\|sol\|la\|s\|R\|r\)\(dd\|bb\|x\|sd\|sb\|dsd\|bsb\|d\|b\|\)\(\A\|\n\)"me=e-1
+  \ display nextgroup=lilyNotesAttr,lilySpecial,lilyArticulation,lilyFunctions
+elseif g:lilypond_language == "english"
+  syn match lilyPitches "\<\([a-g]\|s\|R\|r\)\(ss\|ff\|x\|qs\|qf\|tqs\|tqf\|s\|f\|\-flatflat\|\-sharpsharp\|\-flat\|\-sharp\|\)\(\A\|\n\)"me=e-1
+  \ display nextgroup=lilyNotesAttr,lilySpecial,lilyArticulation,lilyFunctions
+elseif g:lilypond_language == "nohl"
+else
+syn match lilyPitches "\<\([a-g]\|s\|R\|r\)\(isis\|eses\|eh\|ih\|eseh\|isih\|is\|es\|\)\(\A\|\n\)"me=e-1
+  \ display nextgroup=lilyNotesAttr,lilySpecial,lilyArticulation,lilyFunctions
+endif
+
+
+syn match lilyNotesAttr "\(\'\+\|\,\+\|\)\(?\|!\|\)\(1024\|512\|256\|128\|64\|32\|16\|8\|4\|2\|1\|\)\(\M.\+\|\)\(\A\|\n\)"me=e-1
+  \ display contained nextgroup=lilySpecial,lilyArticulation,lilyFunctions
+
 
 syn match lilyVar            "\(\i\|\-\)\+\(\s\|\)\+="me=e-1
-syn match lilyAltVar2        "\l\(\-\|\u\|\l\)\+\."me=e-1
+syn match lilyAltVar2        "\l\(\-\|\u\|\l\)\+\l\."me=e-1
   \ display contained nextgroup=lilyVar
-syn match lilyAltVar1        "\l\(\-\|\u\|\l\)\+\."he=e-1 
+syn match lilyAltVar1        "\l\(\-\|\u\|\l\)\+\l\."he=e-1 
   \ display nextgroup=lilyAltVar2
+
+syn match lilyContexts "\(\\\|\<\)\(AncientRemoveEmptyStaffContext\|ChoirStaff\|ChordNames\|CueVoice\|Devnull\|DrumStaff\|DrumVoice\|Dynamics\|FiguredBass\|FretBoards\|Global\|GrandStaff\|GregorianTranscriptionStaff\|GregorianTranscriptionVoice\|KievanStaff\|KievanVoice\|Lyrics\|MensuralStaff\|MensuralVoice\|NoteNames\|NullVoice\|OneStaff\|PetrucciStaff\|PetrucciVoice\|PianoStaff\|RemoveEmptyDrumStaffContext\|RemoveEmptyRhythmicStaffContext\|RemoveEmptyStaffContext\|RemoveEmptyTabStaffContext\|RhythmicStaff\|Score\|Staff\|StaffGroup\|TabStaff\|TabVoice\|VaticanaStaff\|VaticanaVoice\|Voice\)\(\A\|\n\)"me=e-1
 
 syn match lilyTranslators "\u\l\+\(_\)\w*\(engraver\|performer\|translator\)"
 
@@ -104,8 +117,14 @@ syn region lilyComment      start="%{"           skip="%$" end="%}"
 syn region lilyComment      start="%\([^{]\|$\)" end="$"
 syn match  lilySpecial      "[(~)]\|[(*)]\|[(:)]\|[(=)]"
 syn match  lilyDynamics     "\\[<!>\\]"
-syn match  lilyArticulation "[-_^][-_^+|>.]"
-syn match  lilyNumber       "[-_^.]\?\(\-\.\|\|\)\d\+[.]\?"
+
+if g:lilypond_language == "nohl"
+  syn match  lilyNumber       "[-_^.]\?\(\-\.\|\)\d\+[.]\{,3}"
+else 
+  syn match  lilyNumber       "[-_^.]\?\(\-\.\|\)\d\+[.]\?"
+end
+
+syn match  lilyArticulation "[-_^][-_^+|>|.]"
 
 syn match Error "}"
 syn match Error "\l\+\d[',]\+"
@@ -117,22 +136,41 @@ syn region lilyScheme
   \ matchgroup=Delimiter 
   \ start="#['`]\?(" 
   \ end=")" 
-  \ contains=@Scheme
+  \ contains=@Scheme,lilyInScheme
+
+syn region lilyInScheme
+  \ matchgroup=Delimiter 
+  \ start="#{" 
+  \ end="#}"
+  \ contained contains=@lilyMatchGroup,lilyInScheme
+
+syn region lilyInScheme
+  \ matchgroup=Delimiter 
+  \ start="(" 
+  \ end=")"
+  \ contains=@Scheme,lilyInScheme
 
 syn region lilyInnerLyrics 
   \ matchgroup=Delimiter 
   \ start="{" end="}" 
-  \ contained contains=ALLBUT,lilyGrobs,lilyPitches
+  \ contained contains=ALLBUT,lilyGrobs,lilyPitches,Error,lilyNotesAttr,lilyAltVar1,lilyAltVar2,lilyInnerMarkup
+
+syn region lilyInnerLyrics 
+  \ matchgroup=Delimiter 
+  \ start="(" end=")" 
+  \ contained contains=ALLBUT,lilyGrobs,lilyPitches,Error,lilyNotesAttr,lilyAltVar1,lilyAltVar2,lilyInnerMarkup
+
 syn region lilyInnerLyrics 
   \ matchgroup=Delimiter 
   \ start="<" end=">" 
-  \ contained contains=ALLBUT,lilyGrobs,lilyPitches
+  \ contained contains=ALLBUT,lilyGrobs,lilyPitches,Error,lilyNotesAttr,lilyAltVar1,lilyAltVar2,lilyInnerMarkup
+
 
 syn region lilyLyrics
   \ matchgroup=lilyLyrics
   \ start="\(\\addlyrics\s\+{\|\\lyricmode\s\+{\|\\lyricsto\s\+\"\+\l\+\"\+\s\+{\)"
   \ end="}"
-  \ contains=ALLBUT,lilyGrobs,lilyPitches,Error
+  \ contains=ALLBUT,lilyGrobs,lilyPitches,Error,lilyNotesAttr,lilyAltVar1,lilyAltVar2,lilyInnerMarkup
 
 syn match lilyGrobsExcpt "LyricText"
 
@@ -140,7 +178,12 @@ syn region lilyMarkup
   \ matchgroup=lilyFunctions
   \ start="\([\_\^\-]\\markup\s\+{\|\\markup\s\+{\)"
   \ end="}"
-  \ contains=ALLBUT,lilyFunctions,lilyInnerLyrics
+  \ contains=ALLBUT,lilyFunctions,lilyInnerLyrics,lilyNotesAttr
+
+syn region lilyInnerMarkup
+  \ matchgroup=Delimiter 
+  \ start="{" end="}" 
+  \ contained contains=ALLBUT,lilyFunctions,lilyInnerLyrics,lilyNotesAttr
 
 command -nargs=+ HiLink hi def link <args>
   HiLink lilyString             String
@@ -153,7 +196,6 @@ command -nargs=+ HiLink hi def link <args>
   HiLink lilyLyrics             Special
   HiLink lilyInnerLyrics        Special
   HiLink lilyFunctions          Statement
-  HiLink lilyDynamics           SpecialChar
   HiLink lilyArticulation       PreProc
   HiLink lilyContexts           Type
   HiLink lilyGrobs              Include
@@ -169,6 +211,7 @@ command -nargs=+ HiLink hi def link <args>
   HiLink lilyAltVar2            SpecialComment
   HiLink lilyMarkupCommands     Keyword
   HiLink lilyPitches            Function
+  HiLink lilyNotesAttr          Function
 delcommand HiLink
 
 let b:current_syntax = "lilypond"
