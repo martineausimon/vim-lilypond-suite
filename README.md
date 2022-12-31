@@ -1,8 +1,10 @@
+# INFO
+
+**⚠ This plugin is not maintened anymore, if you use NeoVim, I recommend you to use [nvim-lilypond-suite](https://github.com/martineausimon/nvim-lilypond-suite) instead.**
+
 # vim-lilypond-suite
 
 This is a filetype plugin for **LilyPond**, with updated syntax and dictionary for auto-completion. This repository also contains an ftplugin for **TeX** files which allows embedded LilyPond syntax highlighting, and makeprg which support `lilypond-book` or `lyluatex` package out of the box.
-
-**EDIT** : If you use Neovim, you should have a look to [nvim-lilypond-suite](https://github.com/martineausimon/nvim-lilypond-suite)
 
 * [Features](#Features)
 * [Installation](#Installation)
@@ -55,7 +57,15 @@ Or use some other plugin manager:
 
 ### Lighter syntax highlighting
 
-Since the last big update [c5ee51b](https://github.com/martineausimon/vim-lilypond-suite/commit/c5ee51b1a03423d42e0feebad31d65623a92f1fa), I changed my method for syntax highlighting and avoided word lists as much as possible, for more lightness. For now only the default language works for note pitches.
+Since the last big update [c5ee51b](https://github.com/martineausimon/vim-lilypond-suite/commit/c5ee51b1a03423d42e0feebad31d65623a92f1fa), I changed my method for syntax highlighting and avoided word lists as much as possible, for more lightness. 
+
+### Pitches language
+
+For now only `default`, `français`, `english` and `nohl` (no highlight) are available for pitches highlighting. You can change language adding this line to your config :
+
+```vim
+let g:lilypond_language="français"
+```
 
 >TODO : create pitches pattern for other languages
 
