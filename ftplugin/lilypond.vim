@@ -67,7 +67,7 @@ setlocal dictionary+=$LILYDICTPATH/translators
 
 nnoremap <buffer> <F4> ma0O\version<space>
 	\<Esc>:read<Space>!lilypond<Space>-v
-	\<Bar>grep<Space>LilyPond<Bar>cut<Space>-c<Space>14-19<cr>
+  \<Bar>grep<Space>LilyPond<Bar>awk<Space>{'print<space>$3'}<cr>
 	\kJi"<esc>6la"<esc>`a:echo ''<cr>
 
 inoremap <buffer> <F4> <esc>ma0O\version<space>
